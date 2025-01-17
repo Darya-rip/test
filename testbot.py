@@ -100,3 +100,37 @@ async def check_sms(message: types.Message):
         await first_menu(message)
     else:
         await message.answer(f'{lang.text_error_sms}')
+
+async def first_menu(message: types.Message):
+    user_id = message.from_user.id
+    lang = user_data[user_id]['language']
+    lang = importlib.import_module(f'lang.{lang}')
+    button = [
+        [types.KeyboardButton(text=lang.text_order)],
+        [types.KeyboardButton(text=lang.text_setting),
+         types.KeyboardButton(text=lang.text_about)],
+        [types.KeyboardButton(text=lang.text_my_orders),
+         types.KeyboardButton(text=lang.text_feedback)]
+    ]
+    keyboard = types.ReplyKeyboardMarkup(keyboard=button, resize_keyboard=True)
+    await message.answer(f'{lang.text_first_menu}', reply_markup=keyboard)
+
+    global menu
+    menu = {
+        lang.text_burgers:{
+            lang.text_cheeseburger:{'price':22000,'image':'cheeseburger.jpg'},
+            lang.text_chicken_burger:{'price':29000,'image':'chicken_burger.jpg'},
+            lang.text_hamburger:{'price':31000,'image':'hamburger.jpg'}
+        },
+        lang.text_salads:{
+            lang.text_coul_slow:{'price':6000,'image':'coul_slow.jpg'},
+            lang.text_loook:{'price':16000,'image':'loook.png'},
+            lang.text_bun:{'price':3000,'image':'bun.jpg'}
+        },
+        lang.text_drinks:{
+            lang.text_ice_tea:{'price':15000,'image':'ice_tea.jpg'},
+            lang.text_ice_capuchino:{'price':12000,'image':'ice_capuchino.png'},
+            lang.text_tea_lemon:{'price':8000,'image':'tea_lemon.png'}
+        }
+    }
+
