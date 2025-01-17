@@ -133,4 +133,31 @@ async def first_menu(message: types.Message):
             lang.text_tea_lemon:{'price':8000,'image':'tea_lemon.png'}
         }
     }
+async def choice_menu(message: types.Message):
+    user_id = message.from_user.id
+    lang = user_data[user_id]['language']
+    lang = importlib.import_module(f'lang.{lang}')
+    user_data[user_id]['state'] = 'none'
+    if message.text == lang.text_order:
+        button = [
+            [types.KeyboardButton(text=lang.text_delivery),
+             types.KeyboardButton(text=lang.text_self_pickup)],
+            [types.KeyboardButton(text=lang.text_back)]
+        ]
+        keyboard = types.ReplyKeyboardMarkup(keyboard=button, resize_keyboard=True)
+        await message.answer(f'{lang.text_choice}',reply_markup=keyboard)
+
+
+async def show_menu(message: types.Message):
+    user_id = message.from_user.id
+    user_data[user_id]['state'] = 'categories'
+    lang = user_data[user_id]['language']
+    lang = importlib.import_module(f'lang.{lang}')
+    if message.text == lang.text_back:
+        del user_data[user_id]['state']
+        await first_menu(message)
+    else:
+        user_data[user_id]['type_delivery'] = message.text
+        await show_category(message)
+    print(1,user_data)
 
