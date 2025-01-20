@@ -161,9 +161,9 @@ async def show_menu(message: types.Message):
         await show_category(message)
     print(1,user_data)
 
+    print("Привет! <3")
     print("HIII <3")
-    print("HIII <3")
-    print("HIII <3")
+    print("Привет! <3")
     print("HIII <3")
     print("how are you?")
     print("love, bae")
